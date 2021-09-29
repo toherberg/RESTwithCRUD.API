@@ -28,6 +28,23 @@ namespace RESTwithCRUD.API.Services
             };
         }
 
+
+        //get list of restaurant from "db"
+        public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync()
+        {
+            return await Task.Run(() => restaurants.FindAll(b => true));
+        }
+
+
+        //get restaurant by guid
+        public async Task<Restaurant> GetRestaurantAsync(Guid id)
+        {
+            return await Task.Run(() => restaurants.Find(b => b.Id == id));
+        }
+
+
+
+
         public void AddRestaurant(Restaurant newRestaurant)
         {
             throw new NotImplementedException();
@@ -43,14 +60,6 @@ namespace RESTwithCRUD.API.Services
             throw new NotImplementedException();
         }
 
-        public Task<Restaurant> GetRestaurant(Guid id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<List<Restaurant>> GetRestaurantsAsync()
-        {
-            return await Task.Run(() => restaurants);
-        }
     }
 }

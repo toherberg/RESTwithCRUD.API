@@ -7,8 +7,8 @@ namespace RESTwithCRUD.API.Services
 {
     public interface IRestaurantRepository
     {
-        Task<List<Restaurant>> GetRestaurantsAsync();
-        Task<Restaurant> GetRestaurant(Guid id);
+        Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
+        Task<Restaurant> GetRestaurantAsync(Guid id);
         void AddRestaurant(Restaurant newRestaurant);
 
         void DeleteRestaurant(Guid id);

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RESTwithCRUD.API.Services;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Controllers
@@ -19,7 +21,16 @@ namespace RESTwithCRUD.API.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> GetRestaurants()
         {
+            Thread.Sleep(5000);
             return Ok(await _restaurantsRepo.GetRestaurantsAsync());
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/{id}")]
+        public async Task<IActionResult> GetRestaurant(Guid id)
+        {
+            Thread.Sleep(5000);
+            return Ok(await _restaurantsRepo.GetRestaurantAsync(id));
         }
 
 
