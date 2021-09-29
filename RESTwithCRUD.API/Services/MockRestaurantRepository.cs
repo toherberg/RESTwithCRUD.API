@@ -1,6 +1,7 @@
 ﻿using RESTwithCRUD.API.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Services
@@ -39,25 +40,36 @@ namespace RESTwithCRUD.API.Services
         //get restaurant by guid
         public async Task<Restaurant> GetRestaurantAsync(Guid id)
         {
-            return await Task.Run(() => restaurants.Find(b => b.Id == id));
+            return await Task.Run(() => restaurants.SingleOrDefault(b => b.Id == id));
         }
 
 
 
 
-        public void AddRestaurant(Restaurant newRestaurant)
+        public Restaurant AddRestaurant(Restaurant newRestaurant)
         {
-            throw new NotImplementedException();
+            newRestaurant.Id = Guid.NewGuid();
+            restaurants.Add(newRestaurant);
+            return newRestaurant;
         }
 
-        public void DeleteRestaurant(Guid id)
+        public Task<bool> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return Task.Run(() => true);
         }
 
-        public void EditRestaurant(Restaurant restaurant, Guid id)
+        public void DeleteRestaurant(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            restaurants.Remove(restaurant);
+        }
+
+        public async Task<Restaurant> EditRestaurant(Restaurant restaurant)
+        {
+            var existingRestaurant = await GetRestaurantAsync(restaurant.Id);
+            existingRestaurant.Name = restaurant.Name;
+            existingRestaurant.Cuisine = restaurant.Cuisine;
+            existingRestaurant.Description = restaurant.Description;
+            return existingRestaurant;
         }
 
 

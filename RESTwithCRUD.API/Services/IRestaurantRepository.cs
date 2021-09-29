@@ -9,11 +9,13 @@ namespace RESTwithCRUD.API.Services
     {
         Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
         Task<Restaurant> GetRestaurantAsync(Guid id);
-        void AddRestaurant(Restaurant newRestaurant);
+        Restaurant AddRestaurant(Restaurant newRestaurant);
 
-        void DeleteRestaurant(Guid id);
+        Task<bool> SaveChangesAsync();
 
-        void EditRestaurant(Restaurant restaurant, Guid id);
+        void DeleteRestaurant(Restaurant restaurant);
+
+        Task<Restaurant> EditRestaurant(Restaurant restaurant);
 
 
     }
