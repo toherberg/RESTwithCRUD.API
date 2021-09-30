@@ -1,6 +1,7 @@
 ﻿using RESTwithCRUD.API.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Services
@@ -28,29 +29,49 @@ namespace RESTwithCRUD.API.Services
             };
         }
 
-        public void AddRestaurant(Restaurant newRestaurant)
+
+        //get list of restaurant from "db"
+        public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync()
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => restaurants.FindAll(b => true));
         }
 
-        public void DeleteRestaurant(Guid id)
+
+        //get restaurant by guid
+        public async Task<Restaurant> GetRestaurantAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => restaurants.SingleOrDefault(b => b.Id == id));
         }
 
-        public void EditRestaurant(Restaurant restaurant, Guid id)
+
+
+
+        public Restaurant AddRestaurant(Restaurant newRestaurant)
         {
-            throw new NotImplementedException();
+            newRestaurant.Id = Guid.NewGuid();
+            restaurants.Add(newRestaurant);
+            return newRestaurant;
         }
 
-        public Task<Restaurant> GetRestaurant(Guid id)
+        public Task<bool> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return Task.Run(() => true);
         }
 
-        public async Task<List<Restaurant>> GetRestaurantsAsync()
+        public void DeleteRestaurant(Restaurant restaurant)
         {
-            return await Task.Run(() => restaurants);
+            restaurants.Remove(restaurant);
         }
+
+        public async Task<Restaurant> EditRestaurant(Restaurant restaurant)
+        {
+            var existingRestaurant = await GetRestaurantAsync(restaurant.Id);
+            existingRestaurant.Name = restaurant.Name;
+            existingRestaurant.Cuisine = restaurant.Cuisine;
+            existingRestaurant.Description = restaurant.Description;
+            return existingRestaurant;
+        }
+
+
     }
 }

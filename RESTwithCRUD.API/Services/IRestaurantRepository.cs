@@ -7,13 +7,15 @@ namespace RESTwithCRUD.API.Services
 {
     public interface IRestaurantRepository
     {
-        Task<List<Restaurant>> GetRestaurantsAsync();
-        Task<Restaurant> GetRestaurant(Guid id);
-        void AddRestaurant(Restaurant newRestaurant);
+        Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
+        Task<Restaurant> GetRestaurantAsync(Guid id);
+        Restaurant AddRestaurant(Restaurant newRestaurant);
 
-        void DeleteRestaurant(Guid id);
+        Task<bool> SaveChangesAsync();
 
-        void EditRestaurant(Restaurant restaurant, Guid id);
+        void DeleteRestaurant(Restaurant restaurant);
+
+        Task<Restaurant> EditRestaurant(Restaurant restaurant);
 
 
     }
