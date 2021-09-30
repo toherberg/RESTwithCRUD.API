@@ -46,17 +46,16 @@ namespace RESTwithCRUD.API.Services
 
 
 
-        public Restaurant AddRestaurant(Restaurant newRestaurant)
+        public async Task<Restaurant> AddRestaurantAsync(Restaurant newRestaurant)
         {
             newRestaurant.Id = Guid.NewGuid();
-            restaurants.Add(newRestaurant);
+            await Task.Run(() => restaurants.Add(newRestaurant));
             return newRestaurant;
         }
 
-        public Task<bool> SaveChangesAsync()
-        {
-            return Task.Run(() => true);
-        }
+
+
+
 
         public void DeleteRestaurant(Restaurant restaurant)
         {
@@ -69,7 +68,7 @@ namespace RESTwithCRUD.API.Services
             existingRestaurant.Name = restaurant.Name;
             existingRestaurant.Cuisine = restaurant.Cuisine;
             existingRestaurant.Description = restaurant.Description;
-            return existingRestaurant;
+            return restaurant;
         }
 
 

@@ -11,7 +11,7 @@ namespace RESTwithCRUD.API.Controllers
     public class RestaurantsController : ControllerBase
     {
 
-        private IRestaurantRepository _restaurantsRepo;
+        private readonly IRestaurantRepository _restaurantsRepo;
 
         public RestaurantsController(IRestaurantRepository repository)
         {
@@ -46,8 +46,7 @@ namespace RESTwithCRUD.API.Controllers
         public async Task<IActionResult> AddRestaurant(Restaurant restaurant)
         {
 
-            _restaurantsRepo.AddRestaurant(restaurant);
-            await _restaurantsRepo.SaveChangesAsync();
+            await _restaurantsRepo.AddRestaurantAsync(restaurant);
 
             return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + restaurant.Id, restaurant);
 
@@ -58,11 +57,11 @@ namespace RESTwithCRUD.API.Controllers
         public async Task<IActionResult> DeleteRestaurant(Guid id)
         {
 
-            var restaurant = await _restaurantsRepo.GetRestaurantAsync(id);
-            if (restaurant != null)
+            var existingRestaurant = await _restaurantsRepo.GetRestaurantAsync(id);
+            if (existingRestaurant != null)
             {
-                _restaurantsRepo.DeleteRestaurant(restaurant);
-                return Ok(await _restaurantsRepo.SaveChangesAsync());
+                _restaurantsRepo.DeleteRestaurant(existingRestaurant);
+                return Ok(existingRestaurant);
             }
 
             return NotFound($"There are no restaurants with ID - {id}");
@@ -77,9 +76,11 @@ namespace RESTwithCRUD.API.Controllers
             var existingRestaurant = await _restaurantsRepo.GetRestaurantAsync(id);
             if (existingRestaurant != null)
             {
-                restaurant.Id = existingRestaurant.Id;
-                await _restaurantsRepo.EditRestaurant(restaurant);
-                return Ok(restaurant);
+                existingRestaurant.Name = restaurant.Name;
+                existingRestaurant.Description = restaurant.Description;
+                existingRestaurant.Cuisine = restaurant.Cuisine;
+                await _restaurantsRepo.EditRestaurant(existingRestaurant);
+                return Ok("Successfully changed");
             }
 
             return NotFound($"There are no restaurants with ID - {id}");

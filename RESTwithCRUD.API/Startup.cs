@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RESTwithCRUD.API.Models;
 using RESTwithCRUD.API.Services;
 
 namespace RESTwithCRUD.API
@@ -20,7 +22,13 @@ namespace RESTwithCRUD.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IRestaurantRepository, MockRestaurantRepository>();
+            services.AddDbContextPool<RestaurantContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantContextConnectionString")));
+
+            services.AddScoped<IRestaurantRepository, SqlRestaurantRepository>();
+
+
+            //DI for mocking data
+            //services.AddSingleton<IRestaurantRepository, MockRestaurantRepository>();
 
 
 
