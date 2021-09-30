@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RESTwithCRUD.API.Models;
 using RESTwithCRUD.API.Services;
 using System;
@@ -41,8 +42,28 @@ namespace RESTwithCRUD.API.Controllers
         }
 
 
+        /// <summary>
+        /// Creates a Restaurant.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/restaurants
+        ///     {
+        ///        "name": "Restaurant1",
+        ///        "cuisine": 1,
+        ///        "description": "this is new restaurant
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="restaurant"></param>
+        /// <returns>A newly created restaurant</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response>  
         [HttpPost]
         [Route("api/[controller]")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddRestaurant(Restaurant restaurant)
         {
 
@@ -52,6 +73,11 @@ namespace RESTwithCRUD.API.Controllers
 
         }
 
+
+        /// <summary>
+        /// Deletes a specific Restaurant from DB.
+        /// </summary>
+        /// <param name="id"></param>    
         [HttpDelete]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> DeleteRestaurant(Guid id)
