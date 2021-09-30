@@ -14,7 +14,7 @@ namespace RESTwithCRUD.API.Services
 
         Task<Restaurant> EditRestaurant(Restaurant restaurant);
 
-        public Task<bool> SaveChangesAsync();
+
 
 
     }

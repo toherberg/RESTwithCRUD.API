@@ -30,8 +30,7 @@ namespace RESTwithCRUD.API.Services
         }
 
 
-
-
+        //add restaurant
 
         public async Task<Restaurant> AddRestaurantAsync(Restaurant newRestaurant)
         {
@@ -41,20 +40,25 @@ namespace RESTwithCRUD.API.Services
             return newRestaurant;
         }
 
+        //delete restaurant
         public void DeleteRestaurant(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            _restaurantContext.Restaurants.Remove(restaurant);
+            _restaurantContext.SaveChanges();
         }
 
-        public Task<Restaurant> EditRestaurant(Restaurant restaurant)
+        //edit restaurant
+        public async Task<Restaurant> EditRestaurant(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            var existingRestaurant = await _restaurantContext.Restaurants.FindAsync(restaurant.Id);
+            if (existingRestaurant != null)
+            {
+                _restaurantContext.Restaurants.Update(restaurant);
+                await _restaurantContext.SaveChangesAsync();
+            }
+
+            return restaurant;
         }
 
-
-        public Task<bool> SaveChangesAsync()
-        {
-            return Task.Run(() => true);
-        }
     }
 }
