@@ -46,10 +46,10 @@ namespace RESTwithCRUD.API.Services
 
 
 
-        public Restaurant AddRestaurant(Restaurant newRestaurant)
+        public async Task<Restaurant> AddRestaurantAsync(Restaurant newRestaurant)
         {
             newRestaurant.Id = Guid.NewGuid();
-            restaurants.Add(newRestaurant);
+            await Task.Run(() => restaurants.Add(newRestaurant));
             return newRestaurant;
         }
 

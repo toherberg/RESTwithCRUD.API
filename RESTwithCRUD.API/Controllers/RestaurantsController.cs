@@ -11,7 +11,7 @@ namespace RESTwithCRUD.API.Controllers
     public class RestaurantsController : ControllerBase
     {
 
-        private IRestaurantRepository _restaurantsRepo;
+        private readonly IRestaurantRepository _restaurantsRepo;
 
         public RestaurantsController(IRestaurantRepository repository)
         {
@@ -46,8 +46,7 @@ namespace RESTwithCRUD.API.Controllers
         public async Task<IActionResult> AddRestaurant(Restaurant restaurant)
         {
 
-            _restaurantsRepo.AddRestaurant(restaurant);
-            await _restaurantsRepo.SaveChangesAsync();
+            await _restaurantsRepo.AddRestaurantAsync(restaurant);
 
             return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + restaurant.Id, restaurant);
 
