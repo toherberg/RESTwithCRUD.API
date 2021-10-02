@@ -13,7 +13,7 @@ namespace RESTwithCRUD.Tests
         }
 
         [Test]
-        public void TestRestaurantToDTO()
+        public void TestConverterServiceRestaurantToDTO()
         {
             var restaurant = new Restaurant();
             var restaurantDTO = ConverterService.RestaurantToDTO(restaurant);
@@ -30,10 +30,10 @@ namespace RESTwithCRUD.Tests
                 Id = Guid.NewGuid(),
                 Name = "rest1",
                 Cuisine = CuisineType.Indian,
-                Description = "topsecret"
+                Description = "Favourite restaurant of many celebrities"
             };
 
-            var expected = "topsecret";
+            var expected = "Favourite restaurant of many celebrities";
 
             Assert.IsTrue(restaurant.Description.Equals(expected));
         }
