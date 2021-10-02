@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTwithCRUD.API.Models;
 using RESTwithCRUD.API.Services;
 using System;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Controllers
@@ -19,23 +19,31 @@ namespace RESTwithCRUD.API.Controllers
             _restaurantsRepo = repository;
         }
 
+
+        /// <summary>
+        /// Finds and returns 1 restaurant from DB
+        /// </summary>
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IActionResult> GetRestaurants()
         {
-            Thread.Sleep(5000);
-            return Ok(await _restaurantsRepo.GetRestaurantsAsync());
+            var result = await _restaurantsRepo.GetRestaurantsAsync();
+            return Ok(result.Select(r => ConverterService.RestaurantToDTO(r)));
         }
 
+
+        /// <summary>
+        /// Finds and returns 1 restaurant from DB
+        /// </summary>
+        /// <param name="id"></param> 
         [HttpGet]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetRestaurant(Guid id)
         {
             var restaurant = await _restaurantsRepo.GetRestaurantAsync(id);
-            Thread.Sleep(5000);
             if (restaurant != null)
             {
-                return Ok(restaurant);
+                return Ok(ConverterService.RestaurantToDTO(restaurant));
             }
 
             return NotFound($"There are no restaurants with ID - {id}");
@@ -57,8 +65,8 @@ namespace RESTwithCRUD.API.Controllers
         ///
         /// </remarks>
         /// <param name="restaurant"></param>
-        /// <returns>A newly created restaurant</returns>
-        /// <response code="201">Returns the newly created item</response>
+        /// <returns>A newly created restaurant DTO</returns>
+        /// <response code="201">Returns the newly created item's DTO</response>
         /// <response code="400">If the item is null</response>  
         [HttpPost]
         [Route("api/[controller]")]
@@ -66,11 +74,11 @@ namespace RESTwithCRUD.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddRestaurant(Restaurant restaurant)
         {
-
             await _restaurantsRepo.AddRestaurantAsync(restaurant);
 
-            return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + restaurant.Id, restaurant);
-
+            return Created(HttpContext.Request.Scheme + "://"
+                + HttpContext.Request.Host + HttpContext.Request.Path + "/"
+                + restaurant.Id, ConverterService.RestaurantToDTO(restaurant));
         }
 
 
@@ -87,7 +95,7 @@ namespace RESTwithCRUD.API.Controllers
             if (existingRestaurant != null)
             {
                 _restaurantsRepo.DeleteRestaurant(existingRestaurant);
-                return Ok(existingRestaurant);
+                return Ok(ConverterService.RestaurantToDTO(existingRestaurant));
             }
 
             return NotFound($"There are no restaurants with ID - {id}");
@@ -95,6 +103,12 @@ namespace RESTwithCRUD.API.Controllers
 
         }
 
+
+        /// <summary>
+        /// Finds existing restaurant in DB by ID 
+        /// and updates it with new data
+        /// </summary>
+        /// <param name="id"></param>   
         [HttpPatch]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> EditRestaurant(Guid id, Restaurant restaurant)
@@ -106,7 +120,7 @@ namespace RESTwithCRUD.API.Controllers
                 existingRestaurant.Description = restaurant.Description;
                 existingRestaurant.Cuisine = restaurant.Cuisine;
                 await _restaurantsRepo.EditRestaurant(existingRestaurant);
-                return Ok("Successfully changed");
+                return Ok(ConverterService.RestaurantToDTO(restaurant));
             }
 
             return NotFound($"There are no restaurants with ID - {id}");
