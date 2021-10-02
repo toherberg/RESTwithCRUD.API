@@ -108,7 +108,8 @@ namespace RESTwithCRUD.API.Controllers
         /// Finds existing restaurant in DB by ID 
         /// and updates it with new data
         /// </summary>
-        /// <param name="id"></param>   
+        /// <param name="id"></param>
+        /// <param name="restaurant"></param>   
         [HttpPatch]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> EditRestaurant(Guid id, Restaurant restaurant)
@@ -120,7 +121,7 @@ namespace RESTwithCRUD.API.Controllers
                 existingRestaurant.Description = restaurant.Description;
                 existingRestaurant.Cuisine = restaurant.Cuisine;
                 await _restaurantsRepo.EditRestaurant(existingRestaurant);
-                return Ok(ConverterService.RestaurantToDTO(restaurant));
+                return Ok(ConverterService.RestaurantToDTO(existingRestaurant));
             }
 
             return NotFound($"There are no restaurants with ID - {id}");
