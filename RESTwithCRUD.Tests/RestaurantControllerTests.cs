@@ -68,64 +68,64 @@ namespace RESTwithCRUD.Tests
         }
 
 
-        //not finished
-        [Test]
-        public void TestCreateRestaurantReturns201IfCreated()
-        {
-            var testRestaurant = new Restaurant
-            {
-                Id = Guid.NewGuid(),
-                Name = "Hatyna",
-                Cuisine = CuisineType.Ukrainian,
-                Description = "Ukrainian cusine"
-            };
+        ////not finished
+        //[Test]
+        //public void TestCreateRestaurantReturns201IfCreated()
+        //{
+        //    var testRestaurant = new Restaurant
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Name = "Hatyna",
+        //        Cuisine = CuisineType.Ukrainian,
+        //        Description = "Ukrainian cusine"
+        //    };
 
-            _restRepository.Setup(a => a.AddRestaurantAsync(testRestaurant)).ReturnsAsync(testRestaurant);
-            _testController = new RestaurantsController(_restRepository.Object);
-            Assert.Fail();
-
-
-        }
+        //    _restRepository.Setup(a => a.AddRestaurantAsync(testRestaurant)).ReturnsAsync(testRestaurant);
+        //    _testController = new RestaurantsController(_restRepository.Object);
+        //    Assert.Fail();
 
 
-        [Test]
-        public void TestCreateRestaurantReturns400IfPostEmpty()
-        {
-            Assert.Fail();
-
-        }
+        //}
 
 
-        [Test]
-        public void TestDeleteRestaurantReturns200IfSucced()
-        {
-            Assert.Fail();
+        //[Test]
+        //public void TestCreateRestaurantReturns400IfPostEmpty()
+        //{
+        //    Assert.Fail();
 
-        }
-
-
-        [Test]
-        public void TestDeleteRestaurantReturnsNotFoundIfWrongID()
-        {
-            Assert.Fail();
-
-        }
+        //}
 
 
-        [Test]
-        public void TestEditRestaurantReturns200IfPatched()
-        {
-            Assert.Fail();
+        //[Test]
+        //public void TestDeleteRestaurantReturns200IfSucced()
+        //{
+        //    Assert.Fail();
 
-        }
+        //}
 
 
-        [Test]
-        public void TestEditRestaurantReturnsNotFoundIfNoSuchID()
-        {
-            Assert.Fail();
+        //[Test]
+        //public void TestDeleteRestaurantReturnsNotFoundIfWrongID()
+        //{
+        //    Assert.Fail();
 
-        }
+        //}
+
+
+        //[Test]
+        //public void TestEditRestaurantReturns200IfPatched()
+        //{
+        //    Assert.Fail();
+
+        //}
+
+
+        //[Test]
+        //public void TestEditRestaurantReturnsNotFoundIfNoSuchID()
+        //{
+        //    Assert.Fail();
+
+        //}
 
 
 

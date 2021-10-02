@@ -9,6 +9,18 @@ namespace RESTwithCRUD.API.Models
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Restaurant>()
+                .HasMany(c => c.Bookings)
+                .WithOne(c => c.Restaurant)
+                .HasForeignKey(s => s.RestaurantId)
+                .OnDelete(DeleteBehavior.Cascade); ;
+
+        }
+
         public DbSet<Restaurant> Restaurants { get; set; }
+
+        public DbSet<Booking> Bookings { get; set; }
     }
 }

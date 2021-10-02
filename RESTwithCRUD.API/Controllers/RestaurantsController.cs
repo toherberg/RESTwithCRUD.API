@@ -21,7 +21,7 @@ namespace RESTwithCRUD.API.Controllers
 
 
         /// <summary>
-        /// Finds and returns 1 restaurant from DB
+        /// Finds and returns all restaurants DTO's from DB
         /// </summary>
         [HttpGet]
         [Route("api/[controller]")]
@@ -29,6 +29,17 @@ namespace RESTwithCRUD.API.Controllers
         {
             var result = await _restaurantsRepo.GetRestaurantsAsync();
             return Ok(result.Select(r => ConverterService.RestaurantToDTO(r)));
+        }
+
+        /// <summary>
+        /// Finds and returns all restaurants with full info
+        /// </summary>
+        [HttpGet]
+        [Route("api/[controller]/full")]
+        public async Task<IActionResult> GetRestaurantsFull()
+        {
+            var result = await _restaurantsRepo.GetRestaurantsAsync();
+            return Ok(result);
         }
 
 

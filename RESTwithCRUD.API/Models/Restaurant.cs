@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace RESTwithCRUD.API.Models
 {
     public class Restaurant
     {
+
+        public Restaurant()
+        {
+            Bookings = new List<Booking>();
+        }
+
         [Key]
         public Guid Id { get; set; }
 
@@ -16,6 +23,8 @@ namespace RESTwithCRUD.API.Models
         public CuisineType Cuisine { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<Booking> Bookings { get; set; }
 
 
     }

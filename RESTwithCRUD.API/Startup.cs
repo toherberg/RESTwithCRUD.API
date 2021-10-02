@@ -29,6 +29,7 @@ namespace RESTwithCRUD.API
             services.AddDbContextPool<RestaurantContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantContextConnectionString")));
 
             services.AddScoped<IRestaurantRepository, SqlRestaurantRepository>();
+            services.AddScoped<IBookingService, BookingService>();
 
             //DI for mocking data
             //services.AddSingleton<IRestaurantRepository, MockRestaurantRepository>();
