@@ -1,5 +1,7 @@
-﻿using RESTwithCRUD.API.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RESTwithCRUD.API.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Services
@@ -36,6 +38,11 @@ namespace RESTwithCRUD.API.Services
 
         }
 
+        public async Task<IEnumerable<Booking>> GetBookings()
+        {
+            var bookings = await _restaurantContext.Bookings.ToListAsync();
+            return bookings;
 
+        }
     }
 }

@@ -13,5 +13,16 @@ namespace RESTwithCRUD.API.Services
                 Cuisine = restaurant.Cuisine
             };
 
+
+        public static BookingDTO BookingToDTO(Booking booking) =>
+            new BookingDTO
+            {
+                Id = booking.Id,
+                CallerName = booking.CallerName,
+                CallerNumber = booking.CallerNumber,
+                GuestsQuantity = booking.GuestsQuantity,
+                RestaurantId = booking.RestaurantId
+
+            };
     }
 }

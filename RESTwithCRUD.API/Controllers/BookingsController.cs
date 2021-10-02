@@ -2,6 +2,7 @@
 using RESTwithCRUD.API.Models;
 using RESTwithCRUD.API.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Controllers
@@ -15,6 +16,19 @@ namespace RESTwithCRUD.API.Controllers
         public BookingsController(IBookingService bookingService)
         {
             _bookingService = bookingService;
+        }
+
+
+        [HttpGet]
+        [Route("api/[controller]")]
+        /// <summary>
+        /// Finds and returns all bookings from DB
+        /// </summary>
+        /// 
+        public async Task<IActionResult> GetBookings()
+        {
+            var result = await _bookingService.GetBookings();
+            return Ok(result.Select(b => ConverterService.BookingToDTO(b)));
         }
 
 
@@ -44,7 +58,7 @@ namespace RESTwithCRUD.API.Controllers
             var addedBookingOrder = await _bookingService.PushBookingOrder(newBookingOrder);
             return Created(HttpContext.Request.Scheme + "://"
                 + HttpContext.Request.Host + HttpContext.Request.Path + "/"
-                + addedBookingOrder.Id, addedBookingOrder);
+                + addedBookingOrder.Id, ConverterService.BookingToDTO(addedBookingOrder));
         }
 
 
