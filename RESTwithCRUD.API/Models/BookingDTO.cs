@@ -5,7 +5,6 @@ namespace RESTwithCRUD.API.Models
 {
     public class BookingDTO
     {
-
         public Guid Id { get; set; }
 
         public Guid RestaurantId { get; set; }

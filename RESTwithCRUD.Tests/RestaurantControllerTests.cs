@@ -40,20 +40,33 @@ namespace RESTwithCRUD.Tests
         [Test]
         public void TestGetRestaurantsReturns200StatusCodeIfSuccessfullAsync()
         {
-            _restRepository.Setup(a => a.GetRestaurantsAsync()).ReturnsAsync(_restaurants);
-            _testController = new RestaurantsController(_restRepository.Object);
-            Assert.IsInstanceOf<OkObjectResult>(_testController.GetRestaurants().Result);
+            //arrange
+            _restRepository.Setup(a => a.GetRestaurantsAsync())
+                .ReturnsAsync(_restaurants);
 
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.GetRestaurants().Result;
+
+            //assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
         }
 
 
         [Test]
         public void TestGetRestaurantReturnsOkResultAfterSuccesfulOperation()
         {
+            //arrange
             Guid idToTest = _restaurants.ElementAt(3).Id;
-            _restRepository.Setup(a => a.GetRestaurantAsync(idToTest)).ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == idToTest));
+            _restRepository.Setup(a => a.GetRestaurantAsync(idToTest))
+                .ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == idToTest));
+
+            //act
             _testController = new RestaurantsController(_restRepository.Object);
-            Assert.IsInstanceOf<OkObjectResult>(_testController.GetRestaurant(idToTest).Result);
+            var result = _testController.GetRestaurant(idToTest).Result;
+
+            //assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
         }
 
 
@@ -61,71 +74,157 @@ namespace RESTwithCRUD.Tests
         [Test]
         public void TestGetRestaurantReturnsNotFoundIfNoSuchID()
         {
+            //arrange
             Guid idToTest = Guid.NewGuid();
-            _restRepository.Setup(a => a.GetRestaurantAsync(idToTest)).ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == idToTest));
+            _restRepository.Setup(a => a.GetRestaurantAsync(idToTest))
+                .ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == idToTest));
+
+            //act
             _testController = new RestaurantsController(_restRepository.Object);
-            Assert.IsInstanceOf<NotFoundObjectResult>(_testController.GetRestaurant(idToTest).Result);
+            var result = _testController.GetRestaurant(idToTest).Result;
+
+            //assert
+            Assert.IsInstanceOf<NotFoundObjectResult>(result);
         }
 
 
-        ////not finished
-        //[Test]
-        //public void TestCreateRestaurantReturns201IfCreated()
-        //{
-        //    var testRestaurant = new Restaurant
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        Name = "Hatyna",
-        //        Cuisine = CuisineType.Ukrainian,
-        //        Description = "Ukrainian cusine"
-        //    };
+        //+
+        [Test]
+        public void TestCreateRestaurantReturnsCreatedResult()
+        {
+            //arrange
+            var testRestaurant = new Restaurant
+            {
+                Id = Guid.NewGuid(),
+                Name = "Hatyna",
+                Cuisine = CuisineType.Ukrainian,
+                Description = "Ukrainian cusine",
+            };
 
-        //    _restRepository.Setup(a => a.AddRestaurantAsync(testRestaurant)).ReturnsAsync(testRestaurant);
-        //    _testController = new RestaurantsController(_restRepository.Object);
-        //    Assert.Fail();
+            _restRepository.Setup(a => a.AddRestaurantAsync(testRestaurant))
+                .ReturnsAsync(testRestaurant);
 
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.AddRestaurant(testRestaurant).Result;
 
-        //}
+            //assert
+            Assert.IsInstanceOf<CreatedAtActionResult>(result);
 
-
-        //[Test]
-        //public void TestCreateRestaurantReturns400IfPostEmpty()
-        //{
-        //    Assert.Fail();
-
-        //}
+        }
 
 
-        //[Test]
-        //public void TestDeleteRestaurantReturns200IfSucced()
-        //{
-        //    Assert.Fail();
+        [Test]
+        public void TestCreateRestaurantReturnsStatusCode201IfCreated()
+        {
+            //arrange
+            var testRestaurant = new Restaurant
+            {
+                Id = Guid.NewGuid(),
+                Name = "Hatyna",
+                Cuisine = CuisineType.Ukrainian,
+                Description = "Ukrainian cusine",
+            };
+            _restRepository.Setup(a => a.AddRestaurantAsync(testRestaurant))
+                .ReturnsAsync(testRestaurant);
 
-        //}
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.AddRestaurant(testRestaurant).Result as CreatedAtActionResult;
+
+            //assert
+            Assert.IsTrue(result.StatusCode == 201);
+
+        }
 
 
-        //[Test]
-        //public void TestDeleteRestaurantReturnsNotFoundIfWrongID()
-        //{
-        //    Assert.Fail();
+        [Test]
+        public void TestDeleteRestaurantReturns200IfSucced()
+        {
+            //arrange
+            var testRestaurant = _restaurants.ElementAt(3);
+            _restRepository.Setup(a => a.GetRestaurantAsync(testRestaurant.Id)).ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == testRestaurant.Id));
 
-        //}
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.DeleteRestaurant(testRestaurant.Id).Result as OkObjectResult;
+
+            //assert
+            Assert.IsTrue(result.StatusCode == 200);
+
+        }
 
 
-        //[Test]
-        //public void TestEditRestaurantReturns200IfPatched()
-        //{
-        //    Assert.Fail();
+        [Test]
+        public void TestDeleteRestaurantReturnsNotFoundIfWrongID()
+        {
+            //arrange
+            var testRestaurant = new Restaurant
+            {
+                Id = Guid.NewGuid(),
+                Name = "testName"
+            };
+            _restRepository.Setup(a => a.GetRestaurantAsync(testRestaurant.Id)).ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == testRestaurant.Id));
 
-        //}
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.DeleteRestaurant(testRestaurant.Id).Result;
+
+            //assert
+            Assert.IsInstanceOf<NotFoundObjectResult>(result);
+        }
 
 
-        //[Test]
-        //public void TestEditRestaurantReturnsNotFoundIfNoSuchID()
-        //{
-        //    Assert.Fail();
+        [Test]
+        public void TestEditRestaurantReturns200IfPatched()
+        {
+            //arrange
+            var testRestaurant = new Restaurant
+            {
+                Id = _restaurants.ElementAt(3).Id,
+                Name = "Hatyna",
+                Cuisine = CuisineType.Ukrainian,
+                Description = "Ukrainian cusine",
+            };
 
-        //}
+            _restRepository.Setup(a => a.GetRestaurantAsync(testRestaurant.Id)).ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == testRestaurant.Id));
+            _restRepository.Setup(a => a.EditRestaurant(testRestaurant)).ReturnsAsync(testRestaurant);
+
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.EditRestaurant(testRestaurant.Id, testRestaurant).Result;
+
+            //assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
+        }
+
+
+        [Test]
+        public void TestEditRestaurantReturnsNotFoundIfNoSuchID()
+        {
+            //arrange
+            var testRestaurant = new Restaurant
+            {
+                Id = Guid.NewGuid(),
+                Name = "Hatyna",
+                Cuisine = CuisineType.Ukrainian,
+                Description = "Ukrainian cusine",
+            };
+
+            _restRepository.Setup(a => a.GetRestaurantAsync(testRestaurant.Id))
+                .ReturnsAsync(_restaurants.FirstOrDefault(r => r.Id == testRestaurant.Id));
+
+            _restRepository.Setup(a => a.EditRestaurant(testRestaurant))
+                .ReturnsAsync(testRestaurant);
+
+            //act
+            _testController = new RestaurantsController(_restRepository.Object);
+            var result = _testController.EditRestaurant(testRestaurant.Id, testRestaurant).Result;
+
+            //assert
+            Assert.IsInstanceOf<NotFoundObjectResult>(result);
+
+        }
 
 
 
