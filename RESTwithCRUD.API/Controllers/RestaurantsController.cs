@@ -85,9 +85,14 @@ namespace RESTwithCRUD.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddRestaurant(Restaurant restaurant)
         {
-            await _restaurantsRepo.AddRestaurantAsync(restaurant);
+            if (ModelState.IsValid)
+            {
+                await _restaurantsRepo.AddRestaurantAsync(restaurant);
 
-            return CreatedAtAction("add", ConverterService.RestaurantToDTO(restaurant));
+                return CreatedAtAction("AddRestaurant", ConverterService.RestaurantToDTO(restaurant));
+            }
+
+            return BadRequest();
         }
 
 
