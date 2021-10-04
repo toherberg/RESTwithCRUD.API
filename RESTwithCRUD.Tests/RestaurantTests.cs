@@ -1,7 +1,5 @@
 using NUnit.Framework;
 using RESTwithCRUD.API.Models;
-using RESTwithCRUD.API.Services;
-using System;
 
 namespace RESTwithCRUD.Tests
 {
@@ -13,42 +11,19 @@ namespace RESTwithCRUD.Tests
         }
 
         [Test]
-        public void TestConverterServiceRestaurantToDTO()
-        {
-            var restaurant = new Restaurant();
-            var restaurantDTO = ConverterService.RestaurantToDTO(restaurant);
-
-            Assert.IsTrue(restaurantDTO.GetType().GetProperties().Length == 3);
-        }
-
-
-        [Test]
-        public void TestRestaurantDescriptionCanBeAddedToModel()
-        {
-            var restaurant = new Restaurant
-            {
-                Id = Guid.NewGuid(),
-                Name = "rest1",
-                Cuisine = CuisineType.Indian,
-                Description = "Favourite restaurant of many celebrities"
-            };
-
-            var expected = "Favourite restaurant of many celebrities";
-
-            Assert.IsTrue(restaurant.Description.Equals(expected));
-        }
-
-
-        [Test]
         public void TestEmptyCuisineSetToNone()
         {
+            //arrange
+            var expected = CuisineType.None;
+
+            //act
             var restaurant = new Restaurant
             {
                 Name = "Rest1"
             };
 
-            var expected = CuisineType.None;
 
+            //assert
             Assert.IsTrue(restaurant.Cuisine.Equals(expected));
         }
 
@@ -56,12 +31,14 @@ namespace RESTwithCRUD.Tests
         [Test]
         public void TestCuisineSetToExpected()
         {
+            //act
             var restaurant = new Restaurant
             {
                 Name = "Rest1",
                 Cuisine = CuisineType.Italian
             };
 
+            //assert
             Assert.IsTrue((int)restaurant.Cuisine == 1);
         }
 

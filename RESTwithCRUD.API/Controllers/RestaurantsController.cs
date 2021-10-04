@@ -87,9 +87,7 @@ namespace RESTwithCRUD.API.Controllers
         {
             await _restaurantsRepo.AddRestaurantAsync(restaurant);
 
-            return Created(HttpContext.Request.Scheme + "://"
-                + HttpContext.Request.Host + HttpContext.Request.Path + "/"
-                + restaurant.Id, ConverterService.RestaurantToDTO(restaurant));
+            return CreatedAtAction("add", ConverterService.RestaurantToDTO(restaurant));
         }
 
 
