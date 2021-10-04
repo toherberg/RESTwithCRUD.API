@@ -38,7 +38,7 @@ namespace RESTwithCRUD.Tests
         }
 
         [Test]
-        public void TestGetRestaurantsReturns200StatusCodeIfSuccessfullAsync()
+        public void TestGetRestaurantsReturns200StatusCodeIfSuccessfull()
         {
             //arrange
             _restRepository.Setup(a => a.GetRestaurantsAsync())
@@ -46,10 +46,10 @@ namespace RESTwithCRUD.Tests
 
             //act
             _testController = new RestaurantsController(_restRepository.Object);
-            var result = _testController.GetRestaurants().Result;
+            var result = _testController.GetRestaurants().Result as OkObjectResult;
 
             //assert
-            Assert.IsInstanceOf<OkObjectResult>(result);
+            Assert.IsTrue(result.StatusCode == 200);
         }
 
 

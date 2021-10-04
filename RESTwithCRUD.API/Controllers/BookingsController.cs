@@ -19,12 +19,11 @@ namespace RESTwithCRUD.API.Controllers
         }
 
 
-        [HttpGet]
-        [Route("api/[controller]")]
         /// <summary>
         /// Finds and returns all bookings from DB
         /// </summary>
-        /// 
+        [HttpGet]
+        [Route("api/[controller]")]
         public async Task<IActionResult> GetBookings()
         {
             var result = await _bookingService.GetBookings();
@@ -53,12 +52,14 @@ namespace RESTwithCRUD.API.Controllers
         /// <response code="400">If the item is null</response>  
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> PushBookingToRestaurant(Booking newBookingOrder)
+        public async Task<IActionResult> PushBooking(Booking newBookingOrder)
         {
-            var addedBookingOrder = await _bookingService.PushBookingOrder(newBookingOrder);
-            return Created(HttpContext.Request.Scheme + "://"
-                + HttpContext.Request.Host + HttpContext.Request.Path + "/"
-                + addedBookingOrder.Id, ConverterService.BookingToDTO(addedBookingOrder));
+            if (ModelState.IsValid)
+            {
+                var addedBookingOrder = await _bookingService.PushBookingOrder(newBookingOrder);
+                return CreatedAtAction("PushBooking", ConverterService.BookingToDTO(addedBookingOrder));
+            }
+            return BadRequest();
         }
 
 
