@@ -48,12 +48,12 @@ namespace RESTwithCRUD.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /api/bookings
+        ///     POST /api/bookingsd
         ///     {
-        ///  "callerName": "Mykhailo",
-        ///  "callerNumber": "0506509495",
-        ///  "guestsQuantity": 5,
-        ///  "restaurantId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///     "callerName": "Mykhailo",
+        ///     "callerNumber": "0506509495",
+        ///     "guestsQuantity": 5,
+        ///     "restaurantId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
         ///     }
         ///
         /// </remarks>
