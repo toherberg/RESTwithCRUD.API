@@ -30,6 +30,17 @@ namespace RESTwithCRUD.API.Controllers
             return Ok(result.Select(b => ConverterService.BookingToDTO(b)));
         }
 
+        /// <summary>
+        /// Finds and returns all bookings filtered by restaurant from DB
+        /// </summary>
+        [HttpGet]
+        [Route("api/[controller]/restfilter")]
+        public async Task<IActionResult> GetBookingsFilteredByRestaurant(Guid restaurantId)
+        {
+            var result = await _bookingService.GetBookingsFilteredByRestaurant(restaurantId);
+            return Ok(result.Select(b => ConverterService.BookingToDTO(b)));
+        }
+
 
         /// <summary>
         /// Creates a new booking order in DB, related to specific Restaurant
