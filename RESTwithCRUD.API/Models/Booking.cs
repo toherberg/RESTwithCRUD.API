@@ -19,6 +19,7 @@ namespace RESTwithCRUD.API.Models
 
 
         //foreighnKey element - restaurant to be booked
+        [Required]
         public Guid RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
 
