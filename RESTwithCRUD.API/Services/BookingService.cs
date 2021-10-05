@@ -2,6 +2,7 @@
 using RESTwithCRUD.API.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RESTwithCRUD.API.Services
@@ -43,6 +44,11 @@ namespace RESTwithCRUD.API.Services
             var bookings = await _restaurantContext.Bookings.ToListAsync();
             return bookings;
 
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsFilteredByRestaurant(Guid id)
+        {
+            return await _restaurantContext.Bookings.Where(b => b.RestaurantId == id).ToListAsync();
         }
     }
 }

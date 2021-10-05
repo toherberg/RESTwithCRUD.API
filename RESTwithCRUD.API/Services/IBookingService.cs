@@ -10,9 +10,12 @@ namespace RESTwithCRUD.API.Services
 
         Task<IEnumerable<Booking>> GetBookings();
 
+        Task<IEnumerable<Booking>> GetBookingsFilteredByRestaurant(Guid id);
+
         Task<Booking> PushBookingOrder(Booking bookingOrder);
 
         Task<bool> CancelBookingOrder(Guid Id);
+
 
 
     }
